@@ -1,55 +1,42 @@
-// Function
-const logNumber: (i: number) => void = (i: number) => {
-  console.log(i);
-};
-
-// When to use annotations
-// 1) Function that returns the 'any' tyupe
-const json = '{"x": 10, "y": 20}';
-const coordinates: { x: number; y: number } = JSON.parse(json);
-console.log(coordinates);
-
-// 2) When you declare a variable on one line and initalize it later
-let words = ['red', 'green', 'blue'];
-let foundWord: boolean;
-
-for (let i = 0; i < words.length; i++) {
-  if (words[i] === 'green') {
-    foundWord = true;
-  }
-}
-
-// 3) Variable whose type cannot be inferred correctly
-let numbers = [-10, -1, 12];
-// boolean OR number
-let numberAboveZero: boolean | number = false;
-
-for (let i = 0; i < numbers.length; i++) {
-  if (numbers[i] > 0) {
-    numberAboveZero = numbers[i];
-  }
-}
-
-//--------------------
-
 const add = (a: number, b: number): number => {
   return a + b;
 };
 
-const subtract = (a: number, b: number): number => {
-  return a + b;
+// The return value for 'subtract' is 'void' b/c we didn't specify a return type
+// and TS will not catch the error we made by omitting the return value in the
+// body of the function
+const subtract = (a: number, b: number) => {
+  a - b;
 };
 
+const subtract2 = (a: number, b: number): number => {
+  return a - b;
+};
+
+function divide(a: number, b: number): number {
+  return a / b;
+}
+
+// same syntax for anonomous functions
 const multiply = function(a: number, b: number): number {
   return a * b;
 };
 
+// The 'void' return type is for a function that does not return a value
 const logger = (message: string): void => {
   console.log(message);
+  // A function with a 'void' return type can also return 'null' and 'undefined'
 };
 
 const throwError = (message: string): never => {
   throw new Error(message);
+  // anytime you throw an error, the function will technically not return anything
+  // so use the 'never' return value
+};
+
+const throwErrorAlternative = (message: string): string => {
+  if (!message) throw new Error(message);
+  return message;
 };
 
 const todaysWeather = {
@@ -58,13 +45,21 @@ const todaysWeather = {
 };
 
 // Destructuring with annotations
-const logWeather = (forcast: { date: Date; weather: string }): void => {
-  console.log(forcast.date);
-  console.log(forcast.weather);
-};
+// const logWeather = (forecast: { date: Date; weather: string }): void => {
+//   console.log(forecast.date);
+//   console.log(forecast.weather);
+// };
 
-// ES2015
-const logWeatherES2015 = ({ date, weather }) => {
+// replace the variable 'forecast' with the destructuring statement
+// The destructuring and annotation portions are always separate statements
+// separated by the colon :
+const logWeather = ({
+  date,
+  weather
+}: {
+  date: Date;
+  weather: string;
+}): void => {
   console.log(date);
   console.log(weather);
 };
